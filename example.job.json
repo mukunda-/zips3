@@ -1,0 +1,95 @@
+{
+   //------------------------------------------------------------------------------------
+   // Name of this job. This will be used to name the output archives, e.g.
+   //  my_export01.zip, my_export02.zip, etc...
+   "name": "my_export",
+
+   //------------------------------------------------------------------------------------
+   // Where to store temporary data during the operation. This folder contains
+   //  information about an ongoing job and also contains data to resume an interrupted
+   //  job.
+   // Default: "zips3-staging"
+   "working_directory": "stage",
+
+   //------------------------------------------------------------------------------------
+   // Where to store the final zip files.
+   // Default: "{working_directory}/output"
+   "output_folder": "output",
+
+   //------------------------------------------------------------------------------------
+   // What AWS profile to use. Leave blank for default. The boto3 library is used and
+   //  will utilize any options set in the .aws folder. See the AWS CLI documentation.
+   "aws-profile": "my-export-profile",
+
+   //------------------------------------------------------------------------------------
+   // Number of threads to use for S3 downloads. Higher = more network bandwidth and less
+   //  stability. Lower = slower.
+   //
+   // By default, the AWS CLI tool uses 10 threads to process tasks. If there are
+   //  millions of small files, higher thread counts can make it go a lot faster.
+   //
+   // Default: 20
+   //"download_thread_count": 20,
+
+   //------------------------------------------------------------------------------------
+   // Max archive size in MiB. While packing, if an archive exceeds this size, then it
+   //  will be saved and a new one will be created.
+   // Default: 50000
+   //"max_archive_size": 50,
+
+   // Multiple sources can be pulled from.
+   "sources": [
+      {
+         // Bucket to access.
+         "bucket": "my-bucket-name",
+
+         //-------------------------------------------------------------------------------
+         // The folder delimiter to use. If this is set, then only the contents of a
+         //  specific "folder" will be downloaded.
+         // For example, with "/" as the delimiter and "test/" as the prefix
+         //  "test/test1" will be downloaded
+         //  "test/subdir/test2" will not.
+         // Keep in mind that S3 doesn't actually have folders. Filenames just have
+         //  delimiters.
+         //
+         // Default: Not set
+         //"delimiter" : "/",
+
+         //-------------------------------------------------------------------------------
+         // The prefix to search for in the s3 bucket. Only files beginning with the
+         //  prefix will be downloaded
+         // Default: "" (to download all files in the bucket)
+         //"prefix": "",
+
+         //-------------------------------------------------------------------------------
+         // The folder prefix to apply to the archived items.
+         // For example, with these options:
+         //   prefix: "folder1/data/"
+         //   s3 file: "folder1/data/test1"
+         //   archived_path_prefix: "test/"
+         //
+         // The filename in the archive will be "test/test1"
+         // Default: ""
+         //"archived_path_prefix": "",
+
+         //-------------------------------------------------------------------------------
+         // Filter patterns control which files are downloaded from the set.
+         // By default, all files are downloaded.
+         //
+         // `patterns` can be specified to include or exclude certain filenames.
+         // For example:
+         //   "patterns"  : [
+         //      "exclude=",     <- Exclude all files to start with.
+         //      "include=\\.(mp4|avi|mkv)$" <- Include only these extensions.
+         //                                                                   
+         //   ]
+         // Each successive pattern overwrites the previous result. There is no special
+         //  merging logic.
+
+         //-------------------------------------------------------------------------------
+         // File download limit - only download the first N files, mainly for testing.
+         // Default: Not set (no limit)
+         //"limit": 500
+      }
+   ]
+ }
